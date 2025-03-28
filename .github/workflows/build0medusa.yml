@@ -42,4 +42,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: kernel-build
-          path: out/*
+          path: |
+            out/arch/arm/boot/zImage
+            out/arch/arm/boot/zImage-dtb
