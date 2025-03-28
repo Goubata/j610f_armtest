@@ -1,1 +1,45 @@
+name: Build Custom Kernel
 
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up build environment
+        run: |
+          sudo apt update
+          sudo apt install -y gcc-arm-linux-gnueabi make bc
+          sudo apt install  -y build-essential flex bison libssl-dev bc \
+                libelf-dev libncurses-dev gcc-arm-linux-gnueabihf \
+                gcc-arm-linux-gnueabi
+
+      - name: Install py2
+        run: |
+          wget https://www.python.org/ftp/python/2.7.18/Python-2.7.18.tgz
+          tar xvf Python-2.7.18.tgz
+          cd Python-2.7.18
+          ./configure
+          make
+          sudo make install
+          
+      - name: Build Kernel
+        run: |
+          chmod +x kernel_build.sh
+          ./kernel_build.sh
+
+      - name: Upload Kernel Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-build
+          path: out/*
