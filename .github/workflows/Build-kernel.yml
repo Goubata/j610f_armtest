@@ -3,10 +3,10 @@ name: Build J610F kernel
 on:
   push:
     branches:
-      - Backup
+      - Customs-by-Rakkashin
   pull_request:
     branches:
-      - Backup
+      - Customs-by-Rakkashin
   workflow_dispatch:
 
 jobs:
